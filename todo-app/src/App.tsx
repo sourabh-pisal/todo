@@ -1,4 +1,21 @@
+import Add from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  AppBar,
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  InputBase,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
+
 import "./App.css";
 
 function App(): JSX.Element {
@@ -18,28 +35,81 @@ function App(): JSX.Element {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          name="todo"
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar variant="dense">
+            <Typography variant="h6" color="inherit" component="div">
+              Todo App
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <Container
+        maxWidth="xs"
+        fixed
+        sx={{
+          marginY: 5,
+        }}
+      >
+        <Paper
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            width: 400,
+          }}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Todo"
+            inputProps={{ "aria-label": "todo" }}
+            required
+            value={todo}
+            onChange={(e) => setTodo(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") addTodo();
+            }}
+          />
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <IconButton
+            color="primary"
+            size="small"
+            aria-label="add"
+            disabled={todo === ""}
+            onClick={addTodo}
+          >
+            <Add />
+          </IconButton>
+        </Paper>
+        <Divider
+          sx={{
+            marginY: 2,
+          }}
         />
-        <br />
-        <br />
-        <br />
-        <button onClick={addTodo}>Add</button>
-      </div>
-      <div>
-        <ul>
+        <Typography variant="body1" marginTop={3}>
+          Current ToDo's
+        </Typography>
+        <List>
           {todos.map((todo) => (
-            <div>
-              <li>{todo}</li>
-              <button onClick={() => deleteTodo(todo)}>Delete</button>
-            </div>
+            <ListItem
+              secondaryAction={
+                <IconButton
+                  aria-label="delete"
+                  color="error"
+                  onClick={() => deleteTodo(todo)}
+                  size="small"
+                >
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+              }
+              divider
+              dense
+            >
+              <ListItemText primary={todo} />
+            </ListItem>
           ))}
-        </ul>
-      </div>
+        </List>
+      </Container>
     </>
   );
 }
