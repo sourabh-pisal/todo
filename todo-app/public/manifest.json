@@ -1,6 +1,7 @@
 {
   "short_name": "Todo App",
-  "name": "Todo Application",
+  "name": "Simple Todo App",
+  "icons": [],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

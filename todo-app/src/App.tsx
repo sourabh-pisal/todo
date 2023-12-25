@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import "./App.css";
 
-function App() {
-  const [todos, setTodos] = useState([]);
-  const [todo, setTodo] = useState("");
+function App(): JSX.Element {
+  const [todos, setTodos] = useState<string[]>([]);
+  const [todo, setTodo] = useState<string>("");
 
   const addTodo = () => {
-    if (todo) {
-      setTodos([...todos, todo]);
-      setTodo("");
-    }
+    if (todo === "") return;
+
+    setTodos([...todos, todo]);
+    setTodo("");
   };
 
-  const deleteTodo = (todoToDelete) => {
+  const deleteTodo = (todoToDelete: string) => {
     setTodos(todos.filter((todo) => todo !== todoToDelete));
   };
 
@@ -20,20 +21,20 @@ function App() {
       <div>
         <input
           type="text"
-          id="todo"
           name="todo"
           value={todo}
           onChange={(e) => setTodo(e.target.value)}
         />
         <br />
         <br />
+        <br />
         <button onClick={addTodo}>Add</button>
       </div>
       <div>
         <ul>
-          {todos.map((todo, index) => (
+          {todos.map((todo) => (
             <div>
-              <li key={index}>{todo}</li>
+              <li>{todo}</li>
               <button onClick={() => deleteTodo(todo)}>Delete</button>
             </div>
           ))}
