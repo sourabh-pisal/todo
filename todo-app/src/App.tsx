@@ -15,28 +15,41 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
+export type Todo = {
+  readonly id: string;
+  readonly text: string;
+  readonly completed: boolean;
+};
+
 function App(): JSX.Element {
-  const [todos, setTodos] = useState<string[]>([]);
-  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todoText, setTodoText] = useState<string>("");
 
   const addTodo = () => {
-    if (todo === "") return;
+    if (todoText === "") return;
 
-    setTodos([...todos, todo]);
-    setTodo("");
+    setTodos([
+      ...todos,
+      {
+        id: uuidv4(),
+        text: todoText,
+        completed: false,
+      },
+    ]);
+    setTodoText("");
   };
 
-  const deleteTodo = (todoToDelete: string) => {
-    setTodos(todos.filter((todo) => todo !== todoToDelete));
+  const deleteTodo = (todoToBeDelete: Todo) => {
+    setTodos(todos.filter((todo) => todo.id !== todoToBeDelete.id));
   };
 
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" square={false}>
           <Toolbar variant="dense">
             <Typography variant="h6" color="inherit" component="div">
               Todo App
@@ -56,7 +69,6 @@ function App(): JSX.Element {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: 400,
           }}
         >
           <InputBase
@@ -64,8 +76,8 @@ function App(): JSX.Element {
             placeholder="Todo"
             inputProps={{ "aria-label": "todo" }}
             required
-            value={todo}
-            onChange={(e) => setTodo(e.target.value)}
+            value={todoText}
+            onChange={(e) => setTodoText(e.target.value)}
             onKeyUp={(e) => {
               if (e.key === "Enter") addTodo();
             }}
@@ -75,7 +87,7 @@ function App(): JSX.Element {
             color="primary"
             size="small"
             aria-label="add"
-            disabled={todo === ""}
+            disabled={todoText === ""}
             onClick={addTodo}
           >
             <Add />
@@ -105,7 +117,7 @@ function App(): JSX.Element {
               divider
               dense
             >
-              <ListItemText primary={todo} />
+              <ListItemText primary={todo.text} id={todo.id} />
             </ListItem>
           ))}
         </List>
