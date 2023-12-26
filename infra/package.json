@@ -9,6 +9,9 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
+    "cdk:synth": "cdk synth",
+    "cdk:deploy": "cdk deploy --all",
+    "prettier": "npx prettier --write .",
     "update": "npx npm-check-updates -u"
   },
   "devDependencies": {
