@@ -10,11 +10,25 @@ exports[`snapshot 1`] = `
     },
   },
   "Resources": {
+    "Bucket83908E77": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "Tags": [
+          {
+            "Key": "aws-cdk:cr-owned:bd2a0397",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
     "BucketDeploymentAwsCliLayerB018DCE1": {
       "Properties": {
         "Content": {
           "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
           },
           "S3Key": "e2277687077a2abf9ae1af1cc9565e6715e2ebb62f79ec53aa75a1af9298f642.zip",
         },
@@ -26,7 +40,7 @@ exports[`snapshot 1`] = `
       "DeletionPolicy": "Delete",
       "Properties": {
         "DestinationBucketName": {
-          "Ref": "HostingBucket5DAC2127",
+          "Ref": "Bucket83908E77",
         },
         "Prune": true,
         "ServiceToken": {
@@ -37,15 +51,116 @@ exports[`snapshot 1`] = `
         },
         "SourceBucketNames": [
           {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
           },
         ],
         "SourceObjectKeys": [
-          "af840149539697600bd1aac9a8295cbabaf799f1e326bae6e5fa229451546ecd.zip",
+          "38235f0660b08f739e7f2ccd4a39a2e7b76057ba1e0b5fcdaedc65a0735093aa.zip",
         ],
       },
       "Type": "Custom::CDKBucketDeployment",
       "UpdateReplacePolicy": "Delete",
+    },
+    "BucketPolicyE9A3008A": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "Bucket83908E77",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "OriginAccessIdentityDF1E3CAC",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "OriginAccessIdentityDF1E3CAC",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "Certificate4E7ABB08": {
+      "DependsOn": [
+        "NsRecord",
+      ],
+      "Properties": {
+        "DomainName": "random-domain-name",
+        "DomainValidationOptions": [
+          {
+            "DomainName": "random-domain-name",
+            "HostedZoneId": {
+              "Ref": "HostedZoneDB99F866",
+            },
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TodoStack/Certificate",
+          },
+        ],
+        "ValidationMethod": "DNS",
+      },
+      "Type": "AWS::CertificateManager::Certificate",
     },
     "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
       "DependsOn": [
@@ -55,7 +170,7 @@ exports[`snapshot 1`] = `
       "Properties": {
         "Code": {
           "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
           },
           "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip",
         },
@@ -134,7 +249,7 @@ exports[`snapshot 1`] = `
                       },
                       ":s3:::",
                       {
-                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
                       },
                     ],
                   ],
@@ -149,7 +264,7 @@ exports[`snapshot 1`] = `
                       },
                       ":s3:::",
                       {
-                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
                       },
                       "/*",
                     ],
@@ -174,7 +289,7 @@ exports[`snapshot 1`] = `
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "HostingBucket5DAC2127",
+                    "Bucket83908E77",
                     "Arn",
                   ],
                 },
@@ -184,7 +299,7 @@ exports[`snapshot 1`] = `
                     [
                       {
                         "Fn::GetAtt": [
-                          "HostingBucket5DAC2127",
+                          "Bucket83908E77",
                           "Arn",
                         ],
                       },
@@ -210,7 +325,7 @@ exports[`snapshot 1`] = `
       "Properties": {
         "DistributionConfig": {
           "Aliases": [
-            "domain-name",
+            "random-domain-name",
           ],
           "DefaultCacheBehavior": {
             "AllowedMethods": [
@@ -223,7 +338,7 @@ exports[`snapshot 1`] = `
               "HEAD",
             ],
             "Compress": true,
-            "TargetOriginId": "ApplicationHostingStackDistributionOrigin10D600107",
+            "TargetOriginId": "TodoStackDistributionOrigin17048A219",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
           "DefaultRootObject": "index.html",
@@ -234,11 +349,11 @@ exports[`snapshot 1`] = `
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "HostingBucket5DAC2127",
+                  "Bucket83908E77",
                   "RegionalDomainName",
                 ],
               },
-              "Id": "ApplicationHostingStackDistributionOrigin10D600107",
+              "Id": "TodoStackDistributionOrigin17048A219",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [
@@ -255,7 +370,9 @@ exports[`snapshot 1`] = `
             },
           ],
           "ViewerCertificate": {
-            "AcmCertificateArn": "arn:aws:acm:us-east-1:*:certificate/jidafosjfioasjfp",
+            "AcmCertificateArn": {
+              "Ref": "Certificate4E7ABB08",
+            },
             "MinimumProtocolVersion": "TLSv1.2_2021",
             "SslSupportMethod": "sni-only",
           },
@@ -263,96 +380,26 @@ exports[`snapshot 1`] = `
       },
       "Type": "AWS::CloudFront::Distribution",
     },
-    "HostingBucket5DAC2127": {
-      "DeletionPolicy": "Retain",
+    "HostedZoneDB99F866": {
       "Properties": {
-        "AccessControl": "Private",
-        "Tags": [
-          {
-            "Key": "aws-cdk:cr-owned:0e3b5cf1",
-            "Value": "true",
-          },
-        ],
+        "Name": "random-domain-name.",
       },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
+      "Type": "AWS::Route53::HostedZone",
     },
-    "HostingBucketPolicyE887D797": {
+    "NsRecord": {
       "Properties": {
-        "Bucket": {
-          "Ref": "HostingBucket5DAC2127",
-        },
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "OriginAccessIdentityDF1E3CAC",
-                    "S3CanonicalUserId",
-                  ],
-                },
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "HostingBucket5DAC2127",
-                    "Arn",
-                  ],
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "HostingBucket5DAC2127",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            {
-              "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "OriginAccessIdentityDF1E3CAC",
-                    "S3CanonicalUserId",
-                  ],
-                },
-              },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "HostingBucket5DAC2127",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
-            },
+        "HostedZoneId": "random-hosted-zone-id",
+        "Name": "random-domain-name",
+        "ResourceRecords": {
+          "Fn::GetAtt": [
+            "HostedZoneDB99F866",
+            "NameServers",
           ],
-          "Version": "2012-10-17",
         },
+        "TTL": "1800",
+        "Type": "NS",
       },
-      "Type": "AWS::S3::BucketPolicy",
+      "Type": "AWS::Route53::RecordSet",
     },
     "OriginAccessIdentityDF1E3CAC": {
       "Properties": {

@@ -48,8 +48,8 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" square={false}>
+      <Box sx={{ flexGrow: 1 }} marginBottom={10}>
+        <AppBar>
           <Toolbar variant="dense">
             <Typography variant="h6" color="inherit" component="div">
               Todo App
