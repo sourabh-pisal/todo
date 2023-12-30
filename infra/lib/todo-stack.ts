@@ -12,7 +12,13 @@ import {
   ViewerProtocolPolicy,
 } from "aws-cdk-lib/aws-cloudfront";
 import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
-import { CfnRecordSet, HostedZone } from "aws-cdk-lib/aws-route53";
+import {
+  ARecord,
+  CfnRecordSet,
+  HostedZone,
+  RecordTarget,
+} from "aws-cdk-lib/aws-route53";
+import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import { Bucket, BucketAccessControl } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 
@@ -56,12 +62,12 @@ export class TodoStack extends Stack {
 
     const originAccessIdentity = new OriginAccessIdentity(
       this,
-      "OriginAccessIdentity"
+      "OriginAccessIdentity",
     );
 
     hostingBucket.grantRead(originAccessIdentity);
 
-    new Distribution(this, "Distribution", {
+    const distribution = new Distribution(this, "Distribution", {
       defaultRootObject: "index.html",
       defaultBehavior: {
         origin: new S3Origin(hostingBucket, { originAccessIdentity }),
@@ -72,6 +78,11 @@ export class TodoStack extends Stack {
       },
       certificate: certificate,
       domainNames: [props.domainName],
+    });
+
+    new ARecord(this, "DelegationRecordRecord", {
+      zone: hostedZone,
+      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
     });
   }
 }
