@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
@@ -25,7 +26,7 @@ export type Todo = {
 };
 
 function App(): JSX.Element {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useLocalStorage<Todo[]>("todos", []);
   const [todoText, setTodoText] = useState<string>("");
 
   const addTodo = () => {
