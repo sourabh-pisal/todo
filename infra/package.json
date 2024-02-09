@@ -5,7 +5,8 @@
     "infra": "bin/infra.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run cdk:synth",
+    "clean": "rm -rf ./dist ./cdk.out",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
@@ -16,10 +17,10 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.6",
-    "@types/node": "20.8.9",
+    "@types/node": "^20.11.17",
+    "aws-cdk": "2.103.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
-    "aws-cdk": "2.103.1",
     "ts-node": "^10.9.1",
     "typescript": "~5.2.2"
   },
@@ -27,5 +28,13 @@
     "aws-cdk-lib": "2.103.1",
     "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"
-  }
+  },
+  "description": "This is a blank project for CDK development with TypeScript.",
+  "main": "bin/infra.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -10,7 +10,7 @@ new TodoStack(app, "TodoStack", {
   env: { region: "us-east-1" },
   hostedZoneId: "{{resolve:ssm:/hosted-zone/root}}",
   domainName: "todo.sourabhpisal.com",
-  assetPath: path.resolve(__dirname, "../../todo-app/build"),
+  assetPath: path.resolve(process.env.BUILD_PATH!),
 });
 
 Tags.of(app).add("Application", "Todo");
